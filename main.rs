@@ -1,5 +1,6 @@
 // https://en.wikipedia.org/wiki/Finite-state_machine
 // https://en.wikipedia.org/wiki/Turing_machine
+// source tsoding daily youtube channel
 
 // Todo:: use enum instead of the current techniques
 

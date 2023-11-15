@@ -1,58 +1,96 @@
-// https://en.wikipedia.org/wiki/Finite-state_machine
-// https://en.wikipedia.org/wiki/Turing_machine
-// source tsoding daily youtube channel
+mod fsm {
+    pub use std::ops::Range;
 
-// Todo:: use enum instead of the current techniques
+    pub const FSM_COLUMN_SIZE: usize = 130;
+    pub const FSM_NEWLINE: usize = 129;
 
-use std::io::{self, BufRead, Write};
+    pub type Index = usize;
 
-const LOCKED: usize = 0;
-const UNLOCKED: usize = 1;
-const STATES_COUNT: usize = 2;
-
-const PUSH: usize = 0;
-const COIN: usize = 1;
-const EVENTS_COUNT: usize = 2;
-
-const FSM: [[usize; EVENTS_COUNT]; STATES_COUNT] = [
-    //      [PUSH, COIN]
-    /* 0 */ [LOCKED, UNLOCKED], // LOCKED
-    //      [PUSH, COIN]
-    /* 1 */ [LOCKED, UNLOCKED], // UnLOCKED
-];
-
-fn next_state(state: usize, event: usize) -> usize {
-    FSM[state][event]
-}
-
-fn state_to_str(state: usize) -> &'static str {
-    match state {
-        LOCKED => "Locked",
-        UNLOCKED => "UnLocked",
-        _ => unreachable!(),
+    pub struct Column {
+        pub ts: [Index; FSM_COLUMN_SIZE],
     }
-}
 
-pub fn main() {
-    let mut state = LOCKED;
-
-    println!("State: {}", state_to_str(state));
-    print!("> ");
-    io::stdout().flush().unwrap();
-    for line in io::stdin().lock().lines() {
-        match line.unwrap().as_str() {
-            "coin" => state = next_state(state, COIN),
-            "push" => state = next_state(state, PUSH),
-            ":q" => break,
-            unknown => {
-                eprintln!("ERROR: Unknown event '{}'", unknown);
+    impl Column {
+        pub fn new() -> Self {
+            Self {
+                ts: [0; FSM_COLUMN_SIZE],
             }
         }
 
-        println!("State: {}", state_to_str(state));
-        print!("> ");
-        io::stdout().flush().unwrap();
+        pub fn fill_range(&mut self, range: Range<char>, state: Index) {
+            for i in range {
+                self.ts[i as usize] = state;
+            }
+        }
     }
 
-    println!("bye! 👋");
+    pub struct Fsm {
+        pub cs: Vec<Column>,
+    }
+
+    impl Fsm {
+        pub fn new() -> Self {
+            Self { cs: Vec::new() }
+        }
+
+        pub fn push(&mut self, column: Column) {
+            self.cs.push(column);
+        }
+
+        pub fn dump(&mut self) {
+            for symbol in 0..FSM_COLUMN_SIZE {
+                print!("{:03} => ", symbol);
+                for column in self.cs.iter() {
+                    print!("{} ", column.ts[symbol]);
+                }
+
+                println!("");
+            }
+        }
+    }
+}
+
+fn match_fsm(fsm: &fsm::Fsm, input: &str) -> bool {
+    let mut state = 1;
+
+    for c in input.chars() {
+        if state == 0 || state >= fsm.cs.len() {
+            break;
+        }
+
+        state = fsm.cs[state].ts[c as usize];
+    }
+
+    if state == 0 {
+        return false;
+    }
+
+    if state < fsm.cs.len() {
+        state = fsm.cs[state].ts[fsm::FSM_NEWLINE];
+    }
+
+    return state >= fsm.cs.len();
+}
+
+fn main() {
+    let mut fsm = fsm::Fsm::new();
+
+    let events = vec!['a' as usize, 'b' as usize, 'c' as usize, fsm::FSM_NEWLINE];
+
+    // Failed state
+    fsm.push(fsm::Column::new());
+
+    for event in events.iter() {
+        let mut col = fsm::Column::new();
+        col.ts[*event] = fsm.cs.len() + 1;
+        fsm.push(col);
+    }
+
+    fsm.dump();
+
+    let inputs = vec!["Hello, World!", "abc", "abcd"];
+
+    for input in inputs.iter() {
+        println!("{:?} => {:?}", input, match_fsm(&fsm, input));
+    }
 }

@@ -8,3 +8,6 @@ video source: [https://www.youtube.com/watch?v=MH56D5M9xSQ](https://www.youtube.
 
 # How to use rust-analyzer in vscode without cargo
 run `update_sysroot.ps1` on windows or `update_sysroot.sh` on linux (make it executable first `chmod +x update_sysroot.sh`) and you're done.
+
+# makefile commands
+simply use `make clean` to clean up output files, `make build` to clean and build, `make run` to clean, build and run.

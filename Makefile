@@ -1,11 +1,18 @@
 .PHONY : clean build run
 
+OS := $(shell uname)
+ifeq ($(findstring "NT", $(OS)),)
+	EXECUTABLE := .exe
+else
+	EXECUTABLE :=
+endif
+
 clean:
 	clear
-	rm -f main.pdb main main.exe
+	rm -f output/main.* output/main$(EXECUTABLE)
 
 build: clean
-	rustc main.rs
+	rustc main.rs -o output/main$(EXECUTABLE)
 
 run: build
-	./main
+	./output/main

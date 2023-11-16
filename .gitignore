@@ -1,3 +1,2 @@
-main.*
-main
-!main.rs
+output/*.*
+!output/.gitkeep

@@ -1,0 +1,10 @@
+{
+    "sysroot_src": "$SYSROOT",
+    "crates": [
+        {
+            "root_module": "main.rs",
+            "edition": "2021",
+            "deps": []
+        }
+    ]
+}

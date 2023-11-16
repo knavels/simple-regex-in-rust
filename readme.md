@@ -3,3 +3,5 @@
 the goal is to implement a simple regex that can recognize `'a' to 'z'`, `+`, `*` and `$`.
 
 for the experimental purposes and fastet development speed, I decided to follow the ignorance of `Cargo` as tsoding did in his video, so I made a simple `Makefile` that "supposed" also to work properly in all operating systems.
+
+video source: [https://www.youtube.com/watch?v=MH56D5M9xSQ](https://www.youtube.com/watch?v=MH56D5M9xSQ)

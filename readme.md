@@ -11,3 +11,6 @@ run `update_sysroot.ps1` on windows or `update_sysroot.sh` on linux (make it exe
 
 # makefile commands
 simply use `make clean` to clean up output files, `make build` to clean and build, `make run` to clean, build and run.
+
+# link to the boilerplate
+it's here --> [https://github.com/knavels/reusable_files/tree/main/rust/no-cargo-boilerplate](https://github.com/knavels/reusable_files/tree/main/rust/no-cargo-boilerplate)

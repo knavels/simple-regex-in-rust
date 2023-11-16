@@ -1,5 +1,5 @@
 {
-    "sysroot_src": "$SYSROOT",
+    "sysroot_src": "C:/Users/Aero/.rustup/toolchains/stable-x86_64-pc-windows-msvc/lib/rustlib/src/rust/library",
     "crates": [
         {
             "root_module": "main.rs",
